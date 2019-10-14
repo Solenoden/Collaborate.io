@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import './App.css';
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import SideNav from "./layout/SideNav";
+
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <div className="App">
+
+          <Route exact path="/" render={(props) => (
+            <React.Fragment>
+              <SideNav className="float-left h-100" style={{float: "left", position: "relative"}} />
+              <div>
+                <div className="text-white text-center" style={{backgroundColor: "#593F59", height: "100vh"}}>
+                  <h1 style={{marginTop: "40vh"}}>Collaborate.io</h1>
+                  <p>A place where software developers can come together to collaborate, and make something great.</p>
+                </div>
+              </div>
+            </React.Fragment>
+          )}/>
+
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
