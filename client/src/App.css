@@ -9,6 +9,44 @@
    background-color: #F2F2F2;
  }
 
+ /* Color Scheme */
  .text-main {
-   color: "#260223";
+   color: #260223;
  }
+
+ .bg-main {
+   background-color: #260223;
+ }
+
+ .text-main-alt {
+   color: #583F59;
+ }
+
+ .bg-main-alt {
+  background-color: #583F59;
+}
+
+ .text-custom-secondary {
+   color: #A4BF44;
+ }
+
+ .bg-custom-secondary {
+  background-color: #A4BF44;
+}
+
+ .text-secondary-alt {
+   color: #CFD88A;
+ }
+
+ .bg-secondary-alt {
+  background-color: #CFD88A;
+}
+
+.text-custom-pink {
+  color: #f2f2f2;
+}
+
+.bg-custom-pink {
+  background-color: #f2f2f2;
+}
+ /*  */

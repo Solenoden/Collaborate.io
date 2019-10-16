@@ -7,25 +7,33 @@ router.route("/").get((req, res) => {
     .catch((err) => console.log("ERROR: " + err));
 });
 
+router.route("/basicAuth").post((req, res) => {
+    User.findOne({email: req.body.email, password: req.body.password})
+    .then((user) => res.json(user))
+    .catch((err) => console.log("ERROR: " + err));
+});
+
 router.route("/:id").get((req, res) => {
     User.findById(req.params.id)
     .then((user) => res.json(user))
     .catch((err) => console.log("ERROR: " + err));
 });
 
+
+
 router.route("/new").post((req, res) => {
     const newUser = new User({
-        email = req.body.email,
-        fullName = req.body.fullName,
-        username = req.body.username,
-        password = req.body.password,
-        skills = req.body.skills,
-        devCategories = req.body.devCategories,
-        subDevCategories = req.body.subDevCategories,
-        profileDescription = req.body.profileDescription,
-        profilePic = req.body.profilePic,
-        friends = req.body.friends,
-        notifications = req.body.notifications
+        email: req.body.email,
+        fullName: req.body.fullName,
+        username: req.body.username,
+        password: req.body.password,
+        skills: req.body.skills,
+        devCategories: req.body.devCategories,
+        subDevCategories: req.body.subDevCategories,
+        profileDescription: req.body.profileDescription,
+        profilePic: req.body.profilePic,
+        friends: req.body.friends,
+        notifications: req.body.notifications
     });
 
     newUser.save()

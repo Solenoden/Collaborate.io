@@ -1,11 +1,25 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import axios from "axios";
+
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-import SideNav from "./layout/SideNav";
+import SideNav from "./components/layout/SideNav";
+import LandingPage from "./components/pages/LandingPage";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
 
 class App extends React.Component {
+
+
+  loginUser = async (email, password) => {
+    console.log(email + ": " + password);
+    axios.post("http://localhost:5000/user/basicAuth", {email: email, password: password})
+    .then((res) => console.log(res));
+  }
+
+  // Main render method
   render() {
     return (
       <Router>
@@ -13,14 +27,27 @@ class App extends React.Component {
 
           <Route exact path="/" render={(props) => (
             <React.Fragment>
-              <SideNav className="float-left h-100" style={{float: "left", position: "relative"}} />
-              <div>
-                <div className="text-white text-center" style={{backgroundColor: "#593F59", height: "100vh"}}>
-                  <h1 style={{marginTop: "40vh"}}>Collaborate.io</h1>
-                  <p>A place where software developers can come together to collaborate, and make something great.</p>
-                </div>
-              </div>
+              <SideNav/>
+              <LandingPage/>
             </React.Fragment>
+          )}/>
+
+          <Route exact path="/login" component={(props) => (
+            <div style={{overflow: "hidden", height: "100vh"}}>
+              <SideNav/>
+              <div className="mx-auto" style={{width: "fit-content", marginTop: "30vh"}}>
+                <LoginForm loginUser={this.loginUser}/>
+              </div>
+            </div>
+          )}/>
+
+          <Route exact path="/signup" component={(props) => (
+            <div style={{overflow: "hidden", height: "100vh"}}>
+              <SideNav/>
+              <div className="mx-auto" style={{width: "fit-content", marginTop: "30vh"}}>
+                <SignupForm/>
+              </div>
+            </div>
           )}/>
 
         </div>
