@@ -8,17 +8,19 @@ export default class SideNav extends Component {
     }
 
     renderLoginStatus() {
-        if (!this.props.user) {
+        if (this.props.user) {
             return (
-                <React.Fragment>
-                    <img className="mx-auto my-3 rounded-circle" style={{width: "75px", height: "75px"}} src="https://cdn-prod.medicalnewstoday.com/content/images/articles/279/279359/eggplants.jpg" alt="Profile"/>
-                    <h6 className="text-white text-center">Username</h6>
-                </React.Fragment>
+                <Link to="/profile/me" style={{textDecoration: "none"}}>
+                    <div>
+                        <img className="mx-auto my-3 rounded-circle" style={{width: "75px", height: "75px"}} src={this.props.user.profilePic} alt="Profile"/>
+                        <h6 className="text-white text-center">Username</h6>
+                    </div>
+                </Link>
             )
         } else {
             return (
             <React.Fragment>
-                <button className="btn btn-primary">LOGIN</button>
+                <Link to="/login" style={{textDecoration: "none"}}><button className="btn btn-primary">LOGIN</button></Link>
             </React.Fragment>
             )
         }
@@ -32,10 +34,10 @@ export default class SideNav extends Component {
                 </div>
 
                 <div className="p-2 text-main text-center" style={{backgroundColor: "#A4BF44"}}>
-                    <h6 className="mb-3">HOME</h6>
-                    <h6 className="mb-3">PROJECTS</h6>
-                    <h6 className="mb-3">DEVELOPERS</h6>
-                    <h6>HELP</h6>
+                    <Link to="/" className="text-main" style={{textDecoration: "none"}}><h6 className="mb-3">HOME</h6></Link>
+                    <Link to="/projects" className="text-main" style={{textDecoration: "none"}}><h6 className="mb-3">PROJECTS</h6></Link>
+                    <Link to="/developers" className="text-main" style={{textDecoration: "none"}}><h6 className="mb-3">DEVELOPERS</h6></Link>
+                    <Link to="/help" className="text-main" style={{textDecoration: "none"}}><h6>HELP</h6></Link>
                 </div>
 
                 <div>

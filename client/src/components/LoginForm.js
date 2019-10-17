@@ -7,13 +7,14 @@ export default class LoginPage extends Component {
 
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
 
         this.state = {
-            email: "",
-            password: ""
+            email: "gavin@mitnet.co.za",
+            password: "pw123"
         }
     }
-
     // OnChange Handlers
     onChangeEmail = (e) => {
         this.setState({
@@ -31,6 +32,8 @@ export default class LoginPage extends Component {
         e.preventDefault();
 
         this.props.loginUser(this.state.email, this.state.password);
+
+        window.location = "/";
     }
 
     render() {
