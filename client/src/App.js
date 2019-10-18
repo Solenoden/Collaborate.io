@@ -10,6 +10,7 @@ import LandingPage from "./components/pages/LandingPage";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import ProfilePage from "./components/pages/ProfilePage";
+import SearchDevelopersPage from './components/pages/SearchDevelopersPage';
 
 class App extends React.Component {
   state = {
@@ -82,10 +83,10 @@ class App extends React.Component {
           )}/>
 
           <Route exact path="/signup" component={(props) => (
-            <div style={{overflow: "hidden", height: "100vh"}}>
+            <div style={{overflow: "hidden", minHeight: "100vh"}}>
               <SideNav user={this.state.user}/>
-              <div className="mx-auto" style={{width: "fit-content", marginTop: "30vh"}}>
-                <SignupForm/>
+              <div className="mx-auto my-auto" style={{width: "fit-content"}}>
+                <SignupForm loginUser={this.loginUser}/>
               </div>
             </div>
           )}/>
@@ -94,7 +95,16 @@ class App extends React.Component {
             <React.Fragment>
               <SideNav user={this.state.user}/>
               <div style={{marginLeft: "8vw"}}>
-              <ProfilePage user={this.state.user}/>
+                <ProfilePage user={this.state.user}/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/developers" component={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div style={{marginLeft: "8vw"}}>
+                <SearchDevelopersPage/>
               </div>
             </React.Fragment>
           )}/>

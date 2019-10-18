@@ -42,11 +42,19 @@
   background-color: #CFD88A;
 }
 
-.text-custom-pink {
+.text-custom-white {
   color: #f2f2f2;
 }
 
-.bg-custom-pink {
+.bg-custom-white {
   background-color: #f2f2f2;
+}
+
+.text-custom-pink {
+  color: #E6D3E6;
+}
+
+.bg-custom-pink {
+  background-color: #E6D3E6;
 }
  /*  */

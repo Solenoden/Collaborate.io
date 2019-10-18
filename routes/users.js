@@ -19,8 +19,6 @@ router.route("/:id").get((req, res) => {
     .catch((err) => console.log("ERROR: " + err));
 });
 
-
-
 router.route("/new").post((req, res) => {
     const newUser = new User({
         email: req.body.email,
@@ -29,7 +27,7 @@ router.route("/new").post((req, res) => {
         password: req.body.password,
         skills: req.body.skills,
         devCategories: req.body.devCategories,
-        subDevCategories: req.body.subDevCategories,
+        devSubCategories: req.body.devSubCategories,
         profileDescription: req.body.profileDescription,
         profilePic: req.body.profilePic,
         friends: req.body.friends,
@@ -47,10 +45,10 @@ router.route("/edit/:id").post((req, res) => {
         // user.email = req.body.email;
         user.fullName = req.body.fullName;
         // user.username = req.body.username
-        user.password = req.body.password;
+        // user.password = req.body.password;
         user.skills = req.body.skills;
         user.devCategories = req.body.devCategories;
-        user.subDevCategories = req.body.subDevCategories;
+        user.devSubCategories = req.body.devSubCategories;
         user.profileDescription = req.body.profileDescription;
         user.profilePic = req.body.profilePic;
         user.friends = req.body.friends;
