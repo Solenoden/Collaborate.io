@@ -11,6 +11,7 @@ import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import ProfilePage from "./components/pages/ProfilePage";
 import SearchDevelopersPage from './components/pages/SearchDevelopersPage';
+import ProjectPage from './components/pages/ProjectPage';
 
 class App extends React.Component {
   state = {
@@ -33,14 +34,7 @@ class App extends React.Component {
     this.loadUser();
   }
 
-  loginUser = async (email, password) => {
-    const res = await axios.post("http://localhost:5000/user/basicAuth", {email: email, password: password});
-
-    localStorage.setItem("userID", res.data._id);
-  }
-
-  async loadUser() {
-    const userID = localStorage.getItem("userID");
+  getUser = async (userID) => {
     const res = await axios.get("http://localhost:5000/user/" + userID);
 
     const user = ({
@@ -56,6 +50,20 @@ class App extends React.Component {
       friends: res.data.friends,
       notifications: res.data.notifications
     });
+
+    return user;
+  }
+
+  loginUser = async (email, password) => {
+    const res = await axios.post("http://localhost:5000/user/basicAuth", {email: email, password: password});
+
+    localStorage.setItem("userID", res.data._id);
+  }
+
+  async loadUser() {
+    const userID = localStorage.getItem("userID");
+    
+    const user = await this.getUser(userID);
 
     this.setState({user});
   }
@@ -95,7 +103,16 @@ class App extends React.Component {
             <React.Fragment>
               <SideNav user={this.state.user}/>
               <div style={{marginLeft: "8vw"}}>
-                <ProfilePage user={this.state.user}/>
+                <ProfilePage user={this.state.user} editable={true}/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/developer/:id" component={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user}/>
+              <div style={{marginLeft: "8vw"}}>
+                <ProfilePage userID={props.match.params.id} getUser={this.getUser} editable={false}/>
               </div>
             </React.Fragment>
           )}/>
@@ -105,6 +122,15 @@ class App extends React.Component {
               <SideNav user={this.state.user} />
               <div style={{marginLeft: "8vw"}}>
                 <SearchDevelopersPage/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/project" render={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div style={{marginLeft: "8vw"}}>
+                <ProjectPage/>
               </div>
             </React.Fragment>
           )}/>

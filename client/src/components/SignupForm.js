@@ -31,7 +31,7 @@ export default class SignupForm extends Component {
 
         this.props.loginUser(this.state.inputEmail, this.state.inputPassword);
 
-        window.location("/profile/me");
+        window.location = "/profile/me";
     }
     // OnChange Handlers
     onChangeInputFullName = (e) => {

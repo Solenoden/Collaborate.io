@@ -11,9 +11,9 @@ export default class SideNav extends Component {
         if (this.props.user) {
             return (
                 <Link to="/profile/me" style={{textDecoration: "none"}}>
-                    <div>
-                        <img className="mx-auto my-3 rounded-circle" style={{width: "75px", height: "75px"}} src={this.props.user.profilePic} alt="Profile"/>
-                        <h6 className="text-white text-center">Username</h6>
+                    <div className="text-center">
+                        <img className="my-3 rounded-circle" style={{width: "75px", height: "75px"}} src={this.props.user.profilePic} alt="Profile"/>
+                        <h6 className="text-white">Username</h6>
                     </div>
                 </Link>
             )

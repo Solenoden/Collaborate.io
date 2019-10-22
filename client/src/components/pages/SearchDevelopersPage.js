@@ -33,6 +33,21 @@ export default class SearchDevelopersPage extends Component {
         return res.data;
     }
 
+    filterDevelopers = () => {
+        let filteredDevelopers = this.state.developers;
+
+        if (this.state.searchUsername !== "") {
+            filteredDevelopers = filteredDevelopers.filter((developer) => developer.fullName.toLowerCase().includes(this.state.searchUsername.toLowerCase()));
+
+        }
+        // if (this.state.searchCategories.length > 0) {
+        //     filteredDevelopers = filteredDevelopers.filter((developer) => {
+        //         developer.devCategories.filter((category) => this.state.searchCategories.contains(category)).length > 0
+        //     });
+        // }
+        return filteredDevelopers;
+    }
+
     removeSearchCategory = (category) => {
         console.log(category);
         let changedArray = this.state.searchCategories;
@@ -134,9 +149,9 @@ export default class SearchDevelopersPage extends Component {
         return [...searchCatogoryConstraints, ...searchSubCatogoryConstraints, ...searchSkillConstraints];
     }
 
-    renderDevelopers = () => {
-        if (this.state.developers.length > 0) {
-            return this.state.developers.map((developer) => {
+    renderDevelopers = (developers) => {
+        if (developers.length > 0) {
+            return developers.map((developer) => {
                 return <div className="shadow-sm mr-3"><DeveloperCard developer={developer} cardType="basic" /></div>
             });
         } else {
@@ -181,8 +196,8 @@ export default class SearchDevelopersPage extends Component {
                         {this.renderSearchConstraints()}
                     </div>
 
-                    <div className="mx-auto d-flex justify-content-center w-75">
-                        {this.renderDevelopers()}
+                    <div className="mx-auto d-flex justify-content-center w-75 mb-5">
+                        {this.renderDevelopers(this.filterDevelopers())}
                     </div>
 
                 </div>

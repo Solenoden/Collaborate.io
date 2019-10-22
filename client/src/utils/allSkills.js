@@ -4,7 +4,14 @@ const skills = [
     "JavaScript",
     "React",
     "Angular",
-    "VueJS"
+    "VueJS",
+
+    "Java",
+    "C#",
+    "C++",
+    "Python",
+    "Ruby",
+    
 ]
 
 const getSkills = () => {

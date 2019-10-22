@@ -7,21 +7,41 @@ import allCategories from "../../utils/allCategories";
 
 export default class ProfilePage extends Component {
     // Default value constants
-    initialSubCategory = "UI Designer";
-    initialSkill = "HTML";
+    initialSubCategory = allCategories.getSubCategories[0];
+    initialSkill = allSkills.getSkills[0];
     //
     state = {
-        tempUser: this.props.user,
+        tempUser: {
+            email: "",
+            fullName: "",
+            username: "",
+            devCategories: [],
+            devSubCategories: [], 
+            skills: [],
+            profileDescription: "",
+            profilePic: "",
+            friends: [],
+            notifications: []
+        },
 
         inputSubCategory: this.initialSubCategory,
         inputSkill: this.initialSkill
     }
     
     static propTypes = {
-        user: PropTypes.object
+        user: PropTypes.object,
+        editable: PropTypes.bool.isRequired
     }
 
-    
+    componentDidMount = async () => {
+        if (!this.props.editable) {
+            const user = await this.props.getUser(this.props.userID);
+            this.setState({tempUser: user});
+        } else {
+            this.setState({tempUser: this.props.user});
+        }
+    }
+
     getProjects(userID) {
         const res = axios.get("http://localhost:5000/project/byUser/" + userID);
         const projects = res.data;
@@ -108,7 +128,11 @@ export default class ProfilePage extends Component {
         if (this.state.tempUser.devCategories.length > 0) {
             return <div className="badge badge-pill badge-primary">{this.state.tempUser.devCategories[0]}</div>
         } else {
-            return <div className="badge badge-danger">Choose a field</div>
+            if (this.props.editable) {
+                return <div className="badge badge-danger">Choose a category</div>
+            } else {
+                return <div className="badge badge-danger">No category chosen</div>
+            }
         }
     }
 
@@ -118,7 +142,11 @@ export default class ProfilePage extends Component {
                 return <div key={category} className="badge badge-pill badge-info mr-1">{category}</div>
             })
         } else {
-            return <div className="badge badge-danger">Choose sub-fields</div>
+            if (this.props.editable) {
+                return <div className="badge badge-danger">Choose sub-categories</div>
+            } else {
+                return <div className="badge badge-danger">No sub-categories chosen</div>
+            }
         }
     }
 
@@ -126,12 +154,20 @@ export default class ProfilePage extends Component {
         if (this.state.tempUser.profileDescription.length > 4) {
             return <p className="w-50 text-white mb-5 mx-auto" >{this.state.tempUser.profileDescription}</p>
         } else {
-            return (
-            <div className="bg-custom-secondary text-white mx-auto mb-5" style={{width: "75px", height: "75px"}}>
-                <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>Write a description</p>
-                <p className="font-weight-bold" style={{fontSize: "24px"}}>+</p>
-            </div>
-            )
+            if (this.props.editable) {
+                return (
+                    <div className="bg-custom-secondary text-white mx-auto mb-5" style={{width: "75px", height: "75px"}}>
+                        <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>Write a description</p>
+                        <p className="font-weight-bold" style={{fontSize: "24px"}}>+</p>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="text-white mx-auto mb-5" style={{width: "75px", height: "75px"}}>
+                        <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>No description</p>
+                    </div>
+                )
+            }
         }
     }
 
@@ -146,12 +182,20 @@ export default class ProfilePage extends Component {
                 )
             })
         } else {
-            return (
-                <div className="bg-custom-secondary text-white" style={{width: "75px", height: "75px"}}>
-                    <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>Add a Skill</p>
-                    <p className="font-weight-bold" style={{fontSize: "24px"}}>+</p>
-                </div>
-            )
+            if (this.props.editable) {
+                return (
+                    <div className="bg-custom-secondary text-white" style={{width: "75px", height: "75px"}}>
+                        <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>Add a Skill</p>
+                        <p className="font-weight-bold" style={{fontSize: "24px"}}>+</p>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="text-white" style={{width: "75px", height: "75px"}}>
+                        <p className="mt-2 mb-0 font-weight-bold" style={{fontSize: "12px"}}>No Skills Chosen</p>
+                    </div>
+                )
+            }
         }
     }
 
@@ -202,24 +246,24 @@ export default class ProfilePage extends Component {
             <React.Fragment>
                 
                 <div className="w-100 bg-custom-secondary text-center" style={{overflow: "hidden"}}>
-                    <button className="btn btn-success float-left mt-5 ml-3" onClick={this.saveProfile}>Save Profile</button>
+                    <button className="btn btn-success float-left mt-5 ml-3" style={{display: (this.props.editable) ? "static" : "none"}} onClick={this.saveProfile}>Save Profile</button>
                     <h1 className="text-main mt-5 mb-3 text-center">{this.state.tempUser.fullName}</h1>
                     <div className="d-flex justify-content-center">
-                        <div data-toggle="modal" data-target="#editDevCategoriesModal">{this.renderCategories()}</div> 
+                        <div data-toggle="modal" data-target={(this.props.editable) ? "#editDevCategoriesModal" : ""}>{this.renderCategories()}</div> 
                         <h6 className="text-main mx-2">|</h6> 
-                        <div data-toggle="modal" data-target="#editDevSubCategoriesModal">{this.renderSubCategories()}</div>
+                        <div data-toggle="modal" data-target={(this.props.editable) ? "#editDevSubCategoriesModal" : ""}>{this.renderSubCategories()}</div>
                     </div>
                 </div>
 
                 <div className="w-100 bg-main-alt text-center" style={{overflow: "hidden"}}>
-                    <img className="rounded-circle my-5" style={{width: "250px", height: "250px"}} src={this.state.tempUser.profilePic} alt="Profile" data-toggle="modal" data-target="#editProfilePicModal"/>
-                    <div data-toggle="modal" data-target="#editDescriptionModal">{this.renderDescription()}</div>
+                    <img className="rounded-circle my-5" style={{width: "250px", height: "250px"}} src={this.state.tempUser.profilePic} alt="Profile" data-toggle="modal" data-target={(this.props.editable) ? "#editProfilePicModal" : ""}/>
+                    <div data-toggle="modal" data-target={(this.props.editable) ? "#editDescriptionModal" : ""}>{this.renderDescription()}</div>
                 </div>
 
                 <div className="w-100 bg-custom-secondary-alt text-main text-center" style={{overflow: "hidden"}}>
                     <h3 className="my-3">SKILLS</h3>
                     
-                    <div className="d-flex flex-row mb-3 justify-content-center" data-toggle="modal" data-target="#editSkillsModal">
+                    <div className="d-flex flex-row mb-3 justify-content-center" data-toggle="modal" data-target={(this.props.editable) ? "#editSkillsModal" : ""}>
                         {this.renderSkillImages()}
                     </div>
                 </div>
