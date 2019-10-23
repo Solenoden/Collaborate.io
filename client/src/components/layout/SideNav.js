@@ -10,12 +10,17 @@ export default class SideNav extends Component {
     renderLoginStatus() {
         if (this.props.user) {
             return (
-                <Link to="/profile/me" style={{textDecoration: "none"}}>
-                    <div className="text-center">
-                        <img className="my-3 rounded-circle" style={{width: "75px", height: "75px"}} src={this.props.user.profilePic} alt="Profile"/>
-                        <h6 className="text-white">Username</h6>
+                <div className="text-center">
+                    <div className="dropdown dropright">
+                        <img className="my-3 rounded-circle dropdown-toggle" style={{width: "75px", height: "75px"}} src={this.props.user.profilePic} alt="Profile" data-toggle="dropdown"/>
+                        <div className="dropdown-menu">
+                            <Link to="/profile/me" className="dropdown-item">Profile</Link>
+                            <Link to="/project/create" className="dropdown-item">Create Project</Link>
+                            <Link to="/signout" className="dropdown-item">Signout</Link>
+                        </div>
                     </div>
-                </Link>
+                    <h6 className="text-white">{this.props.user.fullName}</h6>
+                </div>
             )
         } else {
             return (

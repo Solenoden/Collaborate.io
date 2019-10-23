@@ -12,6 +12,8 @@ import SignupForm from "./components/SignupForm";
 import ProfilePage from "./components/pages/ProfilePage";
 import SearchDevelopersPage from './components/pages/SearchDevelopersPage';
 import ProjectPage from './components/pages/ProjectPage';
+import SearchProjectCategoriesPage from './components/pages/SearchProjectCategoriesPage';
+import SearchProjectsPage from './components/pages/SearchProjectsPage';
 
 class App extends React.Component {
   state = {
@@ -131,6 +133,24 @@ class App extends React.Component {
               <SideNav user={this.state.user} />
               <div style={{marginLeft: "8vw"}}>
                 <ProjectPage/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/projects" render={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div style={{marginLeft: "8vw"}}>
+                <SearchProjectCategoriesPage/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/projects/:category" render={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div style={{marginLeft: "8vw"}}>
+                <SearchProjectsPage/>
               </div>
             </React.Fragment>
           )}/>
