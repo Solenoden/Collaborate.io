@@ -7,6 +7,12 @@ const categories = [
     "Data Science",
 ]
 
+const projectCategories = [
+    "Web",
+    "Mobile",
+    "Game"
+]
+
 const subCategories = [
     "UI Designer",
     "UX Designer",
@@ -27,8 +33,12 @@ const getCategories = () => {
     return categories;
 }
 
+const getProjectCategories = () => {
+    return projectCategories;
+}
+
 const getSubCategories = () => {
     return subCategories;
 }
 
-module.exports = {getCategories, getSubCategories};
+module.exports = {getCategories, getSubCategories, getProjectCategories};

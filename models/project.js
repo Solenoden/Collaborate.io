@@ -6,7 +6,7 @@ const projectSchema = new Schema({
     categories: {type: Array, required: true},
     status: {type: String, required: false, default: "Development"},
     dateStarted: {type: String, required: true},
-    dateEnded: {type: String, required: true},
+    dateEnded: {type: String, required: false},
     description: {type: String, required: false, default: "No description"},
     technologies: {type: Array, required: false, default: ["No technologies"]},
     images: [
@@ -26,7 +26,7 @@ const projectSchema = new Schema({
     vacancies: [
         {
             position: {type: String, required: true},
-            skills: {type: String, required: false, default: []},
+            skills: {type: Array, required: true},
             datePosted: {type: String, required: true},
         }
     ], 

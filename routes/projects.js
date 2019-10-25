@@ -3,13 +3,13 @@ let Project = require("../models/project");
 
 router.route("/").get((req, res) => {
     Project.find()
-    .then((users) => res.json(users))
+    .then((projects) => res.json(projects))
     .catch((err) => console.log("ERROR: " + err));
 });
 
 router.route("/:id").get((req, res) => {
     Project.findById(req.params.id)
-    .then((user) => res.json(user))
+    .then((project) => res.json(project))
     .catch((err) => console.log("ERROR: " + err));
 })
 
@@ -23,11 +23,11 @@ router.route("/new").post((req, res) => {
         description: req.body.description,
         // technologies: req.body.technologies,
         // images: req.body.technologies,
-        
+        devTeam: req.body.devTeam
     });
 
     newProject.save()
-    .then(() => res.json("Project successfully created."))
+    .then(() => res.json(newProject._id))
     .catch((err) => console.log("ERROR: " + err));
 });
 
@@ -42,7 +42,7 @@ router.route("/edit/:id").post((req, res) => {
         project.dateEnded = req.body.dateEnded;
         project.description = req.body.description;
         project.technologies = req.body.technologies;
-        project.images = req.body.technologies;
+        project.images = req.body.images;
         project.devTeam = req.body.devTeam;
         project.vacancies = req.body.vacancies;
         project.gitHubLink = req.body.gitHubLink;

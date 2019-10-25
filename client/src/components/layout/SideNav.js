@@ -33,7 +33,7 @@ export default class SideNav extends Component {
 
     render() {
         return (
-            <div className="d-flex flex-column justify-content-between" style={{width: "8vw", height: "100vh", backgroundColor: "#260223", float: "left", position: "fixed"}}>
+            <div className="d-flex flex-column justify-content-between shadow-lg" style={{width: "8vw", height: "100vh", backgroundColor: "#260223", float: "left", position: "fixed"}}>
                 <div className="d-flex flex-column p-2">
                     {this.renderLoginStatus()}
                 </div>

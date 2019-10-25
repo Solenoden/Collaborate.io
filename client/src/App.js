@@ -14,6 +14,7 @@ import SearchDevelopersPage from './components/pages/SearchDevelopersPage';
 import ProjectPage from './components/pages/ProjectPage';
 import SearchProjectCategoriesPage from './components/pages/SearchProjectCategoriesPage';
 import SearchProjectsPage from './components/pages/SearchProjectsPage';
+import CreateProjectForm from "./components/CreateProjectForm";
 
 class App extends React.Component {
   state = {
@@ -128,11 +129,20 @@ class App extends React.Component {
             </React.Fragment>
           )}/>
 
-          <Route exact path="/project" render={(props) => (
+          <Route exact path="/project/create" render={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div className="mx-auto my-auto" style={{width: "fit-content"}}>
+                <CreateProjectForm founder={this.state.user}/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/project/view/:id" render={(props) => (
             <React.Fragment>
               <SideNav user={this.state.user} />
               <div style={{marginLeft: "8vw"}}>
-                <ProjectPage/>
+                <ProjectPage projectID={props.match.params.id} user={this.state.user} getUser={this.getUser}/>
               </div>
             </React.Fragment>
           )}/>
@@ -150,7 +160,7 @@ class App extends React.Component {
             <React.Fragment>
               <SideNav user={this.state.user} />
               <div style={{marginLeft: "8vw"}}>
-                <SearchProjectsPage/>
+                <SearchProjectsPage category={props.match.params.category.toLowerCase()}/>
               </div>
             </React.Fragment>
           )}/>

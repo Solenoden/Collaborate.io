@@ -246,9 +246,9 @@ export default class ProfilePage extends Component {
             <React.Fragment>
                 
                 <div className="w-100 bg-custom-secondary text-center" style={{overflow: "hidden"}}>
-                    <button className="btn btn-success float-left mt-5 ml-3" style={{display: (this.props.editable) ? "static" : "none"}} onClick={this.saveProfile}>Save Profile</button>
-                    <h1 className="text-main mt-5 mb-3 text-center">{this.state.tempUser.fullName}</h1>
-                    <div className="d-flex justify-content-center">
+                    <button className="btn btn-success" style={{position: "absolute", top: "3.5rem", left: "9vw", display: (this.props.editable) ? "static" : "none"}} onClick={this.saveProfile}>Save Profile</button>
+                    <h1 className="text-main mt-5 mb-1 text-center">{this.state.tempUser.fullName}</h1>
+                    <div className="d-flex justify-content-center mb-5">
                         <div data-toggle="modal" data-target={(this.props.editable) ? "#editDevCategoriesModal" : ""}>{this.renderCategories()}</div> 
                         <h6 className="text-main mx-2">|</h6> 
                         <div data-toggle="modal" data-target={(this.props.editable) ? "#editDevSubCategoriesModal" : ""}>{this.renderSubCategories()}</div>
