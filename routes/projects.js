@@ -7,6 +7,18 @@ router.route("/").get((req, res) => {
     .catch((err) => console.log("ERROR: " + err));
 });
 
+router.route("/byUser/:id").get((req, res) => {
+    Project.find({"devTeam.developerID": req.params.id})
+    .then((projects) => res.json(projects))
+    .catch((err) => console.log("ERROR: " + err));
+});
+
+router.route("/latest/:category").get((req, res) => {
+    Project.find({"categories[0].toLowerCase()": req.params.category}).sort({_id: -1}).limit(3)
+    .then((projects) => res.json(projects))
+    .catch((err) => console.log("ERROR: " + err));
+});
+
 router.route("/:id").get((req, res) => {
     Project.findById(req.params.id)
     .then((project) => res.json(project))
@@ -50,6 +62,18 @@ router.route("/edit/:id").post((req, res) => {
 
         project.save()
         .then(() => res.json("Successfully updated project's information."))
+        .catch((err) => console.log("ERROR: " + err));
+    })
+    .catch((err) => console.log("ERROR: " + err));
+});
+
+router.route("/applyForVacancy/:id").post((req, res) => {
+    Project.findById(req.params.id)
+    .then((project) => {
+        project.vacancies[project.vacancies.findIndex((vacancy) => vacancy._id == req.body.vacancyID)].applicants.push(req.body.userID);
+        
+        project.save()
+        .then(() => res.json("Successfully applied for vacancy."))
         .catch((err) => console.log("ERROR: " + err));
     })
     .catch((err) => console.log("ERROR: " + err));

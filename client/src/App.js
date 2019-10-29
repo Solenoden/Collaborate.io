@@ -15,6 +15,7 @@ import ProjectPage from './components/pages/ProjectPage';
 import SearchProjectCategoriesPage from './components/pages/SearchProjectCategoriesPage';
 import SearchProjectsPage from './components/pages/SearchProjectsPage';
 import CreateProjectForm from "./components/CreateProjectForm";
+import ManageProjectPage from "./components/pages/ManageProjectPage";
 
 class App extends React.Component {
   state = {
@@ -59,7 +60,6 @@ class App extends React.Component {
 
   loginUser = async (email, password) => {
     const res = await axios.post("http://localhost:5000/user/basicAuth", {email: email, password: password});
-
     localStorage.setItem("userID", res.data._id);
   }
 
@@ -143,6 +143,15 @@ class App extends React.Component {
               <SideNav user={this.state.user} />
               <div style={{marginLeft: "8vw"}}>
                 <ProjectPage projectID={props.match.params.id} user={this.state.user} getUser={this.getUser}/>
+              </div>
+            </React.Fragment>
+          )}/>
+
+          <Route exact path="/project/manage/:id" render={(props) => (
+            <React.Fragment>
+              <SideNav user={this.state.user} />
+              <div style={{marginLeft: "8vw"}}>
+                <ManageProjectPage projectID={props.match.params.id} user={this.state.user} getUser={this.getUser}/>
               </div>
             </React.Fragment>
           )}/>

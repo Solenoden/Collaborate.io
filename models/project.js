@@ -28,6 +28,7 @@ const projectSchema = new Schema({
             position: {type: String, required: true},
             skills: {type: Array, required: true},
             datePosted: {type: String, required: true},
+            applicants: {type: Array, required: false, default: []}
         }
     ], 
     gitHubLink: {type: String, required: false},

@@ -165,14 +165,14 @@ export default class SearchDevelopersPage extends Component {
     // Main render method
     render() {
         return (
-            <React.Fragment>
+            <div className="container">
 
-                <div className="bg-custom-secondary" style={{overflow: "hidden"}}>
+                <div className="bg-custom-secondary mb-5 shadow-lg" style={{overflow: "hidden", borderRadius: "0 0 0.75rem 0.75rem"}}>
                     <h1 className="text-main text-center my-5">DEVELOPERS</h1>
                 </div>
 
-                <div className="bg-custom-pink" style={{overflow: "hidden"}}>
-                    <h3 className="text-main text-center my-5">FEATURED DEVELOPERS</h3>
+                <div className="bg-main-alt text-white shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
+                    <h3 className="text-center my-5">FEATURED DEVELOPERS</h3>
 
                     <div className="d-flex justify-content-center mb-5">
                         <div className="shadow-sm mr-4"><DeveloperCard cardType="featured"/></div>
@@ -182,10 +182,10 @@ export default class SearchDevelopersPage extends Component {
                     
                 </div>
 
-                <div>
-                    <h3 className="text-main text-center my-5">FIND A DEVELOPER</h3>
+                <div style={{overflow: "hidden"}}>
+                    <h3 className="text-main text-center my-3">FIND A DEVELOPER</h3>
 
-                    <div className="bg-main w-50 d-flex p-2 rounded-lg mx-auto">
+                    <div className="bg-main w-75 d-flex p-2 rounded-lg mx-auto">
                         <input className="form-control mr-3" style={{height: "40px", width: "200px"}} value={this.state.searchUsername} onChange={this.onChangeSearchUsername} placeholder="Developer's Username"/>
                         <select className="form-control mr-3" style={{height: "40px", width: "100px"}} onChange={this.onChangeSearchCategory}><option>Field</option>{this.renderCategoryOptions()}</select>
                         <select className="form-control mr-3" style={{height: "40px", width: "100px"}} onChange={this.onChangeSearchSubCategory}><option>Sub-Field</option>{this.renderSubCategoryOptions()}</select>
@@ -202,7 +202,7 @@ export default class SearchDevelopersPage extends Component {
 
                 </div>
 
-            </React.Fragment>
+            </div>
         )
     }
 }

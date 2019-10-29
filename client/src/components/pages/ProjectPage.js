@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DeveloperCard from '../DeveloperCard';
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 import allCategories from "../../utils/allCategories";
 import allSkills from "../../utils/allSkills";
@@ -71,11 +72,9 @@ export default class ProjectPage extends Component {
             project: project
         });
         // Determine if the current user logged in is the founder of the project ,if so they can edit the project
-        if (this.props.user.userID === project.devTeam[0].developerID) {
-            this.setState({
-                editable: true
-            });
-        }
+        this.setState({
+            editable: this.props.user.userID === project.devTeam[0].developerID
+        });
     }
 
     saveProject = async () => {
@@ -139,6 +138,18 @@ export default class ProjectPage extends Component {
                 datePosted: ""
             }
         });
+    }
+    applyForVacancy = (vacancyID, userID) => {
+        // Check if the user is already applied for that vacancy, if not then apply for it
+        let vacancy = this.state.project.vacancies.find((vacancy) => vacancy._id === vacancyID);
+
+        if (vacancy.applicants.indexOf(userID) === -1) {
+            axios.post("http://localhost:5000/project/applyForVacancy/" + this.state.project._id, {vacancyID, userID});
+        }
+
+        window.location = "/project/view/" + this.state.project._id;
+
+
     }
     // onChange Handlers 
     onChangeCategories = (e) => {
@@ -259,34 +270,37 @@ export default class ProjectPage extends Component {
         });
 
         devTeam.push(this.state.project.vacancies.map((vacancy) => {
-            return <div className="shadow-sm mr-4 mb-4"><DeveloperCard cardType="vacancy" developer={vacancy}/></div>
+            return <div className="shadow-sm mr-4 mb-4" onClick={(this.state.editable) ? "" : this.applyForVacancy.bind(this, vacancy._id,this.props.user.userID)}><DeveloperCard cardType="vacancy" developer={vacancy}/></div>
         }));
 
-        devTeam.push(<div className="shadow-lg">
-            <div className="bg-main text-center text-white p-2" style={{width: "175px", height: "260px"}} data-toggle="modal" data-target={(this.state.editable) ? "#createVacancyModal" : ""}>
-                <h3>Create a position</h3>
-                <h1 className="mt-5">+</h1>
-            </div>
-        </div>);
+        if (this.state.editable) {
+            devTeam.push(<div className="shadow-lg">
+                <div className="bg-main text-center text-white p-2" style={{width: "175px", height: "260px"}} data-toggle="modal" data-target={(this.state.editable) ? "#createVacancyModal" : ""}>
+                    <h3>Create a position</h3>
+                    <h1 className="mt-5">+</h1>
+                </div>
+            </div>);
+        }
 
         return devTeam;
     }
     // Main render method
     render() {
         return (
-            <React.Fragment>
-                <div className="bg-custom-pink text-main text-center" style={{overflow: "hidden"}}>
-                    <button className="btn bg-custom-secondary text-white" style={{position: "absolute", top: "3.5rem", left: "9vw", display: (this.state.editable) ? "static" : "none"}} onClick={this.saveProject}>Save Project</button>
+            <div className="container">
+                <div className="bg-main-alt text-white text-center shadow-lg mb-5" style={{overflow: "hidden", borderRadius: "0 0 0.75rem 0.75rem"}}>
+                    <button className="btn bg-custom-secondary text-white" style={{position: "absolute", top: "3.5rem", left: "17vw", display: (this.state.editable) ? "static" : "none"}} onClick={this.saveProject}>Save Project</button>
+                    <Link to={"/project/manage/" + this.state.project._id} style={{textDecoration: "none"}}><button className="btn bg-custom-secondary text-white" style={{position: "absolute", top: "6.5rem", left: "17vw", display: (this.state.editable) ? "static" : "none"}}>Manage Project</button></Link>
                     <h1 className="mt-5 mb-3">{this.state.project.title}</h1>
                     <div data-toggle="modal" data-target={(this.state.editable) ? "#editCategoriesModal" : ""}>{this.renderCategories()}</div>
                 </div>
 
-                <div className="bg-main-alt text-white" style={{overflow: "hidden"}}>
+                <div className="bg-custom-secondary text-main shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
                     <h3 className="my-5 text-center">PROJECT DESCRIPTION</h3>
                     <div data-toggle="modal" data-target={(this.state.editable) ? "#editDescriptionModal" : ""}>{this.renderDescription()}</div>
                 </div>
 
-                <div className="bg-custom-pink text-main" style={{overflow: "hidden"}}>
+                <div className="bg-custom-secondary-alt text-main shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
                     <h3 className="my-3 text-center">TECHNOLOGIES</h3>
 
                     <div className="d-flex flex-row w-75 mx-auto justify-content-center" data-toggle="modal" data-target={(this.state.editable) ? "#editTechnologiesModal" : ""}>
@@ -294,7 +308,7 @@ export default class ProjectPage extends Component {
                     </div>
                 </div>
 
-                <div style={{height: "50vh", overflow: "hidden"}}>
+                <div className="shadow-sm bg-light mb-3" style={{height: "50vh", overflow: "hidden", borderRadius: "1.5rem"}}>
                     <div id="projectCarousel" className="carousel slide w-100 h-100" data-ride="carousel">
 
                         <ul className="carousel-indicators">
@@ -325,8 +339,8 @@ export default class ProjectPage extends Component {
                     </div>
                 </div>
 
-                <div className="bg-custom-secondary" style={{overflow: "hidden"}}>
-                    <h2 className="my-5 text-center">MEET OUR TEAM</h2>
+                <div className="bg-custom-secondary shadow-sm" style={{overflow: "hidden", borderRadius: "1.5rem 1.5rem 0 0"}}>
+                    <h2 className="my-5 text-center text-main">MEET OUR TEAM</h2>
                     <div className="d-flex justify-content-center"><div className="shadow-lg mx-auto"><DeveloperCard cardType="founder" developer={this.state.project.devTeam[0]}/></div></div>
                     <div className="my-3 d-flex flex-wrap w-75 mx-auto justify-content-center">
                         {this.renderDevTeam()}
@@ -442,7 +456,7 @@ export default class ProjectPage extends Component {
                     </div>
                 </div>
 
-            </React.Fragment>
+            </div>
         )
     }
 }

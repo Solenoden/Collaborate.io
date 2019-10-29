@@ -19,7 +19,7 @@ export default class DeveloperCard extends Component {
                             <img className="rounded-circle my-auto mx-auto" style={{width: "92.5px", height: "92.5px"}}/>
                         </div>
 
-                        <div className="bg-main-alt p-3 text-center text-white">
+                        <div className={(this.props.colorScheme === "main") ? "bg-main-alt text-white p-3 text-center" : "bg-custom-secondary text-main p-3 text-center"}>
                             <h5>Name Surname</h5>
                             <h6>Position</h6>
                         </div>

@@ -27,10 +27,10 @@ export default class LoginPage extends Component {
         });
     }
     // onSubmit
-    onSubmit = (e) => {
+    onSubmit = async (e) => {
         e.preventDefault();
 
-        this.props.loginUser(this.state.email, this.state.password);
+        await this.props.loginUser(this.state.email, this.state.password);
 
         window.location = "/";
     }

@@ -34,7 +34,7 @@ export default class ProjectCard extends Component {
         } else if (this.props.cardType === "category") {
             return (
                 <Link to={"/projects/" + this.props.category.toLowerCase()} className="text-main" style={{textDecoration: "none"}}>
-                <div className="text-main bg-white p-2 d-flex" style={{width: "200px", height: "100px"}}>
+                <div className="text-main bg-white p-2 d-flex" style={{width: "250px", height: "125px"}}>
                     <h3 className="my-auto mx-auto">{this.props.category}</h3>
                 </div>
                 </Link>

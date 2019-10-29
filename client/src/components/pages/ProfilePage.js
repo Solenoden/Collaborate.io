@@ -5,6 +5,8 @@ import axios from "axios";
 import allSkills from "../../utils/allSkills";
 import allCategories from "../../utils/allCategories";
 
+import ProjectCard from "../ProjectCard";
+
 export default class ProfilePage extends Component {
     // Default value constants
     initialSubCategory = allCategories.getSubCategories[0];
@@ -24,12 +26,16 @@ export default class ProfilePage extends Component {
             notifications: []
         },
 
+        projects: [],
+
         inputSubCategory: this.initialSubCategory,
         inputSkill: this.initialSkill
     }
     
     static propTypes = {
         user: PropTypes.object,
+        userID: PropTypes.string,
+        getUser: PropTypes.func,
         editable: PropTypes.bool.isRequired
     }
 
@@ -40,12 +46,16 @@ export default class ProfilePage extends Component {
         } else {
             this.setState({tempUser: this.props.user});
         }
+
+        await this.getProjects();
     }
 
-    getProjects(userID) {
-        const res = axios.get("http://localhost:5000/project/byUser/" + userID);
-        const projects = res.data;
-        console.log(projects);
+    getProjects = async () => {
+        const res = await axios.get("http://localhost:5000/project/byUser/" + this.state.tempUser.userID);
+        
+        this.setState({
+            projects: res.data
+        })
     }
 
     saveProfile = async () => {
@@ -199,16 +209,14 @@ export default class ProfilePage extends Component {
         }
     }
 
-    renderProjects() {
-        return (
-            <div className="shadow-lg text-center" style={{width: "200px", height:"100px"}}>
-                <div className="my-auto p-2">
-                    <h4 style={{fontSize: "18px"}}>Project Name</h4>
-                    <h6 style={{fontSize: "12px"}}>Position</h6>
-                    <p style={{fontSize: "10px"}} className="font-italic">Status</p>
-                </div>
-            </div>
-        )
+    renderProjects = () => {
+        if (this.state.projects.length > 0) {
+            return this.state.projects.map((project) => {
+                return <div className="shadow-sm"><ProjectCard project={project} cardType="basic" /></div>
+            });
+        } else {
+            return <p>No Projects</p>
+        }
     }
 
     renderSkillOptions() {
@@ -243,9 +251,9 @@ export default class ProfilePage extends Component {
     // Main render method
     render() {
         return (
-            <React.Fragment>
+            <div className="container">
                 
-                <div className="w-100 bg-custom-secondary text-center" style={{overflow: "hidden"}}>
+                <div className="w-100 bg-custom-secondary text-center shadow-lg mb-5" style={{overflow: "hidden", borderRadius: "0 0 0.75rem 0.75rem"}}>
                     <button className="btn btn-success" style={{position: "absolute", top: "3.5rem", left: "9vw", display: (this.props.editable) ? "static" : "none"}} onClick={this.saveProfile}>Save Profile</button>
                     <h1 className="text-main mt-5 mb-1 text-center">{this.state.tempUser.fullName}</h1>
                     <div className="d-flex justify-content-center mb-5">
@@ -255,12 +263,12 @@ export default class ProfilePage extends Component {
                     </div>
                 </div>
 
-                <div className="w-100 bg-main-alt text-center" style={{overflow: "hidden"}}>
+                <div className="w-100 bg-main-alt text-center shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "0.75rem"}}>
                     <img className="rounded-circle my-5" style={{width: "250px", height: "250px"}} src={this.state.tempUser.profilePic} alt="Profile" data-toggle="modal" data-target={(this.props.editable) ? "#editProfilePicModal" : ""}/>
                     <div data-toggle="modal" data-target={(this.props.editable) ? "#editDescriptionModal" : ""}>{this.renderDescription()}</div>
                 </div>
 
-                <div className="w-100 bg-custom-secondary-alt text-main text-center" style={{overflow: "hidden"}}>
+                <div className="w-100 bg-custom-secondary-alt text-main text-center shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
                     <h3 className="my-3">SKILLS</h3>
                     
                     <div className="d-flex flex-row mb-3 justify-content-center" data-toggle="modal" data-target={(this.props.editable) ? "#editSkillsModal" : ""}>
@@ -270,7 +278,7 @@ export default class ProfilePage extends Component {
 
                 <div className="w-100 text-center" style={{overflow: "hidden"}}>
                     <h3 className="text-main my-5">PROJECTS</h3>
-                    <div className="d-flex justify-content-center mb-5">
+                    <div className="d-flex justify-content-around mb-5">
                         {this.renderProjects()}
                     </div>
                 </div>
@@ -399,7 +407,7 @@ export default class ProfilePage extends Component {
                     </div>
                 </div>
 
-            </React.Fragment>
+            </div>
         )
     }
 }
