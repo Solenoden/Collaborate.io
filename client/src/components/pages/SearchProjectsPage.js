@@ -30,8 +30,8 @@ export default class SearchProjectsPage extends Component {
     }
 
     getLatestProjects = async () => {
-        const res = await axios.get("http://localhost:5000/project/latest/" + this.props.category);
-        // console.log(res);
+        const res = await axios.get("http://localhost:5000/project/latest/" + this.props.category[0].toUpperCase() + this.props.category.slice(1));
+
         this.setState({
             latestProjects: res.data
         });
@@ -47,7 +47,12 @@ export default class SearchProjectsPage extends Component {
     // Other render methods
     renderProjects = () => {
         return this.filterProjects().map((project) => {
-            return <div className="mr-4 mb-4 shadow-sm"><ProjectCard cardType="basic" project={project}/></div>
+            return <div key={project._id} className="mr-4 mb-4 shadow-sm"><ProjectCard cardType="basic" project={project}/></div>
+        });
+    }
+    renderLatestProjects = () => {
+        return this.state.latestProjects.slice(0, 2).map((project) => {
+            return <div key={project._id} className="shadow-lg"><ProjectCard cardType="featured" project={project}/></div>
         });
     }
     // Main render method
@@ -62,16 +67,14 @@ export default class SearchProjectsPage extends Component {
                     <h3 className="text-center my-5">{"LATEST " + this.props.category.toUpperCase() + " PROJECTS"}</h3>
 
                     <div className="d-flex w-100 mx-auto justify-content-around mb-5">
-                        <div className="shadow-lg"><ProjectCard cardType="featured"/></div>
-                        <div className="shadow-lg"><ProjectCard cardType="featured"/></div>
-                        <div className="shadow-lg"><ProjectCard cardType="featured"/></div>
+                        {this.renderLatestProjects()}
                     </div>
                 </div>
 
                 <div style={{overflow: "hidden"}}>
                     <h3 className="text-center text-main my-3">FIND A PROJECT</h3>
 
-                    <div className="text-white bg-main mx-auto p-2 mb-3 d-flex rounded-lg" style={{width: "80%"}}>
+                    <div className="text-white bg-main mx-auto p-2 mb-3 d-flex rounded-lg justify-content-center" style={{width: "80%"}}>
                         <input className="form-control" style={{width: "25%", height: "30px"}} placeholder="Project Name..."/>
                     </div>
 

@@ -3,8 +3,7 @@ const categories = [
     "Web",
     "Mobile",
     "Game",
-    "AI",
-    "Data Science",
+    "AI"
 ]
 
 const projectCategories = [

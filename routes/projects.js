@@ -14,7 +14,7 @@ router.route("/byUser/:id").get((req, res) => {
 });
 
 router.route("/latest/:category").get((req, res) => {
-    Project.find({"categories[0].toLowerCase()": req.params.category}).sort({_id: -1}).limit(3)
+    Project.find({categories: [req.params.category]}).sort({_id: -1}).limit(3)
     .then((projects) => res.json(projects))
     .catch((err) => console.log("ERROR: " + err));
 });

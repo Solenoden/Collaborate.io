@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 
 import allCategories from "../../utils/allCategories";
 import allSkills from "../../utils/allSkills";
+import {ProjectCategoryOptions, SkillOptions} from "../../utils/allOptions";
 
 export default class ProjectPage extends Component {
     initialTechnology = allSkills.getSkills()[0];
@@ -149,7 +150,6 @@ export default class ProjectPage extends Component {
 
         window.location = "/project/view/" + this.state.project._id;
 
-
     }
     // onChange Handlers 
     onChangeCategories = (e) => {
@@ -188,17 +188,6 @@ export default class ProjectPage extends Component {
             inputVacancy: changedInputVacancy
         });
     }
-    // Render options
-    renderCategoryOptions = () => {
-        return allCategories.getProjectCategories().map((category) => {
-            return <option key={category}>{category}</option>
-        });
-    }
-    renderTechnologyOptions = () => {
-        return allSkills.getSkills().map((technology) => {
-            return <option key={technology}>{technology}</option>
-        });
-    }
     // Other render methods
     renderInputTechnologies = () => {
         return this.state.project.technologies.map((technology) => {
@@ -212,7 +201,7 @@ export default class ProjectPage extends Component {
     }
     renderCategories = () => {
         if (this.state.project.categories[0].length > 0) {
-            return <p className="mb-5">{this.state.project.categories[0]}</p>
+            return <div className="mb-5 badge badge-pill bg-custom-secondary text-white p-2" style={{fontSize: "16px"}}>{this.state.project.categories[0]}</div>
         } else {
             if (this.state.editable) {
                 return <p className="mb-5">Choose a category</p>
@@ -239,9 +228,9 @@ export default class ProjectPage extends Component {
         if (this.state.project.technologies.length > 0) {
             return this.state.project.technologies.map((tech) => {
                 return (
-                    <div key={tech} className="mr-3" style={{width: "75px"}}>
-                        <img style={{width: "50px", height: "50px"}}/>
-                        <p className="font-italic mt-2 text-main" >{tech}</p>
+                    <div key={tech} className="mr-3 text-center" style={{width: "75px"}}>
+                        <img style={{width: "50px", height: "50px"}} src={allSkills.getIconPath(tech)} alt="" />
+                        <p className="font-italic mt-2 text-main " >{tech}</p>
                     </div>
                 )
             })
@@ -263,19 +252,22 @@ export default class ProjectPage extends Component {
         }
     }
     renderDevTeam = () => {
+        let key = 0;
         let devTeam = this.state.project.devTeam.map((developer) => {
             if (developer.position.toLowerCase() !== "founder") {
-                return <div className="shadow-sm mr-4 mb-4"><DeveloperCard cardType="team" developer={developer}/></div>
+                key++;
+                return <div key={key} className="shadow-sm mr-4 mb-4"><DeveloperCard cardType="team" developer={developer}/></div>
             }
         });
 
         devTeam.push(this.state.project.vacancies.map((vacancy) => {
-            return <div className="shadow-sm mr-4 mb-4" onClick={(this.state.editable) ? "" : this.applyForVacancy.bind(this, vacancy._id,this.props.user.userID)}><DeveloperCard cardType="vacancy" developer={vacancy}/></div>
+            key++;
+            return <div key={key} className="shadow-sm mr-4 mb-4" onClick={(this.state.editable) ? null : this.applyForVacancy.bind(this, vacancy._id,this.props.user.userID)}><DeveloperCard cardType="vacancy" developer={vacancy}/></div>
         }));
 
         if (this.state.editable) {
-            devTeam.push(<div className="shadow-lg">
-                <div className="bg-main text-center text-white p-2" style={{width: "175px", height: "260px"}} data-toggle="modal" data-target={(this.state.editable) ? "#createVacancyModal" : ""}>
+            devTeam.push(<div key={"createPosition"} className="shadow-lg" style={{height: "fit-content"}}>
+                <div className="bg-main text-center text-white p-2 card-hover-dark" style={{width: "175px", height: "260px"}} data-toggle="modal" data-target={(this.state.editable) ? "#createVacancyModal" : ""}>
                     <h3>Create a position</h3>
                     <h1 className="mt-5">+</h1>
                 </div>
@@ -289,21 +281,23 @@ export default class ProjectPage extends Component {
         return (
             <div className="container">
                 <div className="bg-main-alt text-white text-center shadow-lg mb-5" style={{overflow: "hidden", borderRadius: "0 0 0.75rem 0.75rem"}}>
-                    <button className="btn bg-custom-secondary text-white" style={{position: "absolute", top: "3.5rem", left: "17vw", display: (this.state.editable) ? "static" : "none"}} onClick={this.saveProject}>Save Project</button>
-                    <Link to={"/project/manage/" + this.state.project._id} style={{textDecoration: "none"}}><button className="btn bg-custom-secondary text-white" style={{position: "absolute", top: "6.5rem", left: "17vw", display: (this.state.editable) ? "static" : "none"}}>Manage Project</button></Link>
-                    <h1 className="mt-5 mb-3">{this.state.project.title}</h1>
-                    <div data-toggle="modal" data-target={(this.state.editable) ? "#editCategoriesModal" : ""}>{this.renderCategories()}</div>
+                    <div className="float-left d-flex flex-column ml-3 mt-5">
+                        <button className="btn bg-custom-secondary text-white mb-3" style={{display: (this.state.editable) ? "static" : "none"}} onClick={this.saveProject}>Save Project</button>
+                        <Link to={"/project/manage/" + this.state.project._id} style={{textDecoration: "none"}}><button className="btn bg-custom-secondary text-white" style={{display: (this.state.editable) ? "static" : "none"}}>Manage Project</button></Link>
+                    </div>
+                    <h1 className="mt-5 mb-3 mx-auto" style={{width: "fit-content"}}>{this.state.project.title}</h1>
+                    <div className={(this.state.editable ? "mx-auto editable" : "mx-auto")} style={{width: "fit-content"}} data-toggle="modal" data-target={(this.state.editable) ? "#editCategoriesModal" : ""}>{this.renderCategories()}</div>
                 </div>
 
                 <div className="bg-custom-secondary text-main shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
                     <h3 className="my-5 text-center">PROJECT DESCRIPTION</h3>
-                    <div data-toggle="modal" data-target={(this.state.editable) ? "#editDescriptionModal" : ""}>{this.renderDescription()}</div>
+                    <div className={(this.state.editable ? "editable" : "")} data-toggle="modal" data-target={(this.state.editable) ? "#editDescriptionModal" : ""}>{this.renderDescription()}</div>
                 </div>
 
                 <div className="bg-custom-secondary-alt text-main shadow-sm mb-3" style={{overflow: "hidden", borderRadius: "1.5rem"}}>
                     <h3 className="my-3 text-center">TECHNOLOGIES</h3>
 
-                    <div className="d-flex flex-row w-75 mx-auto justify-content-center" data-toggle="modal" data-target={(this.state.editable) ? "#editTechnologiesModal" : ""}>
+                    <div className={(this.state.editable) ? "editable d-flex flex-row w-75 mx-auto justify-content-center" : "d-flex flex-row w-75 mx-auto justify-content-center"} data-toggle="modal" data-target={(this.state.editable) ? "#editTechnologiesModal" : ""}>
                         {this.renderTechnologies()}
                     </div>
                 </div>
@@ -318,13 +312,13 @@ export default class ProjectPage extends Component {
                         </ul>
 
                         <div className="carousel-inner mx-auto w-75 h-100">
-                            <div className="carousel-item active">
+                            <div className="carousel-item active h-100 w-100">
                                 <img  className="w-100 h-100" src="https://www.mht.net/wp-content/uploads/2016/10/Cover-ERP-PM.png" alt="Los Angeles"/>
                             </div>
-                            <div className="carousel-item">
+                            <div className="carousel-item h-100 w-100">
                                 <img className="w-100 h-100" src="https://www.ntaskmanager.com/wp-content/uploads/2019/07/top-pivotal-tracker-alternatives-for-agile-project-manager.jpg" alt="Chicago"/>
                             </div>
-                            <div className="carousel-item">
+                            <div className="carousel-item h-100 w-100">
                                 <img  className="w-100 h-100" src="https://2k4s4k3wofhp2b3qaf1365bl-wpengine.netdna-ssl.com/wp-content/uploads/2018/10/The-Triple-Constraints-of-Project-Management-Explained.jpg" alt="New York"/>
                             </div>
                         </div>
@@ -359,7 +353,7 @@ export default class ProjectPage extends Component {
                         </div>
                         <div className="modal-body">
                             <select className="form-control" id="selCategories" value={this.state.project.categories[0]} onChange={this.onChangeCategories}>
-                                {this.renderCategoryOptions()}
+                                <ProjectCategoryOptions />
                             </select>
                         </div>
 
@@ -404,7 +398,7 @@ export default class ProjectPage extends Component {
                         <div className="modal-body">
                             <div className="d-flex mb-3">
                                 <select className="form-control" id="selInputTechnologies" value={this.state.inputTechnology} onChange={this.onChangeInputTechnology}>
-                                    {this.renderTechnologyOptions()}
+                                    <SkillOptions />
                                 </select>
                                 <button className="btn btn-success rounded-circle ml-3 my-auto" onClick={this.addTechnology}>+</button>
                             </div>
@@ -439,7 +433,7 @@ export default class ProjectPage extends Component {
 
                             <div className="d-flex mb-3">
                                 <select className="form-control" id="selInputVacancySkills" value={this.state.inputVacancySkill} onChange={this.onChangeInputVacancySkill}>
-                                    {this.renderTechnologyOptions()}
+                                    <SkillOptions />
                                 </select>
                                 <button className="btn btn-success rounded-circle ml-3 my-auto" onClick={this.addVacancySkill}>+</button>
                             </div>

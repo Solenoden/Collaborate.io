@@ -7,6 +7,20 @@
    width: 100vw;
    height: 100vh;
    background-color: #F2F2F2;
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+ }
+
+ .card-hover-gray:hover {
+  box-shadow: 5px 5px 5px rgb(128, 128, 128);
+ }
+
+ .card-hover-dark:hover {
+  box-shadow: 5px 5px 5px rgb(48, 48, 48);
+ }
+
+ .editable:hover {
+   opacity: 0.5;
+   cursor: pointer;
  }
 
  /* Color Scheme */

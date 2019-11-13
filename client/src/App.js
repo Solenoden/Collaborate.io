@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import axios from "axios";
 
 import './App.css';
@@ -103,75 +103,75 @@ class App extends React.Component {
           )}/>
 
           <Route exact path="/profile/me" component={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user}/>
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <ProfilePage user={this.state.user} editable={true}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/developer/:id" component={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user}/>
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <ProfilePage userID={props.match.params.id} getUser={this.getUser} editable={false}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/developers" component={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <SearchDevelopersPage/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/project/create" render={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div className="mx-auto my-auto" style={{width: "fit-content"}}>
+              <div className="mx-auto" style={{width: "fit-content", marginTop: "5vh"}}>
                 <CreateProjectForm founder={this.state.user}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/project/view/:id" render={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <ProjectPage projectID={props.match.params.id} user={this.state.user} getUser={this.getUser}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/project/manage/:id" render={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <ManageProjectPage projectID={props.match.params.id} user={this.state.user} getUser={this.getUser}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/projects" render={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <SearchProjectCategoriesPage/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
           <Route exact path="/projects/:category" render={(props) => (
-            <React.Fragment>
+            <div style={{overflow: "hidden"}}>
               <SideNav user={this.state.user} />
-              <div style={{marginLeft: "8vw"}}>
+              <div style={(window.innerWidth > 1300) ? {marginLeft: "8vw"} : {marginTop: "10vh"}}>
                 <SearchProjectsPage category={props.match.params.category.toLowerCase()}/>
               </div>
-            </React.Fragment>
+            </div>
           )}/>
 
         </Router>

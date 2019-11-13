@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import axios from "axios";
 
@@ -15,10 +14,6 @@ export default class SearchDevelopersPage extends Component {
         searchSkills: [],
 
         developers: []
-    }
-
-    static propTypes = {
-        // prop: PropTypes
     }
 
     componentDidMount = async () => {
@@ -40,16 +35,11 @@ export default class SearchDevelopersPage extends Component {
             filteredDevelopers = filteredDevelopers.filter((developer) => developer.fullName.toLowerCase().includes(this.state.searchUsername.toLowerCase()));
 
         }
-        // if (this.state.searchCategories.length > 0) {
-        //     filteredDevelopers = filteredDevelopers.filter((developer) => {
-        //         developer.devCategories.filter((category) => this.state.searchCategories.contains(category)).length > 0
-        //     });
-        // }
+
         return filteredDevelopers;
     }
 
     removeSearchCategory = (category) => {
-        console.log(category);
         let changedArray = this.state.searchCategories;
         changedArray = changedArray.filter((currCategory) => currCategory !== category);
 
@@ -58,7 +48,6 @@ export default class SearchDevelopersPage extends Component {
         });
     }
     removeSearchSubCategory = (subCategory) => {
-        console.log(subCategory);
         let changedArray = this.state.searchSubCategories;
         changedArray = changedArray.filter((currSubCategory) => currSubCategory !== subCategory);
 
@@ -67,7 +56,6 @@ export default class SearchDevelopersPage extends Component {
         });
     }
     removeSearchSkill = (skill) => {
-        console.log(skill);
         let changedArray = this.state.searchSkills;
         changedArray = changedArray.filter((currSkill) => currSkill !== skill);
 
@@ -119,9 +107,33 @@ export default class SearchDevelopersPage extends Component {
     }
     // Other render methods
     renderSkillOptions() {
-        return allSkills.getSkills().map((skill) => {
+        let render = [];
+
+        render.push(...allSkills.getSkills().General.map((skill) => {
             return <option key={skill}>{skill}</option>
-        });
+        }));
+
+        render.push(...allSkills.getSkills().Design.map((skill) => {
+            return <option key={skill}>{skill}</option>
+        }));
+
+        render.push(...allSkills.getSkills().Web.map((skill) => {
+            return <option key={skill}>{skill}</option>
+        }));
+
+        render.push(...allSkills.getSkills().Mobile.map((skill) => {
+            return <option key={skill}>{skill}</option>
+        }));
+
+        render.push(...allSkills.getSkills().Game.map((skill) => {
+            return <option key={skill}>{skill}</option>
+        }));
+
+        render.push(...allSkills.getSkills().AI.map((skill) => {
+            return <option key={skill}>{skill}</option>
+        }));
+        
+        return render;
     }
     renderCategoryOptions() {
         return allCategories.getCategories().map((category) => {
@@ -135,15 +147,15 @@ export default class SearchDevelopersPage extends Component {
     }
     renderSearchConstraints() {
         let searchCatogoryConstraints = this.state.searchCategories.map((category) => {
-            return (<span key={category} className="badge badge-pill badge-primary mr-1 mt-1" onClick={this.removeSearchCategory.bind(this, category)}>{category}</span>)
+            return (<span key={category} className="badge badge-pill badge-primary mr-1 mt-1 editable" onClick={this.removeSearchCategory.bind(this, category)}>{category}</span>)
         });
 
         let searchSubCatogoryConstraints = this.state.searchSubCategories.map((category) => {
-            return (<span key={category} className="badge badge-pill badge-info mr-1 mt-1" onClick={this.removeSearchSubCategory.bind(this, category)}>{category}</span>)
+            return (<span key={category} className="badge badge-pill badge-info mr-1 mt-1 editable" onClick={this.removeSearchSubCategory.bind(this, category)}>{category}</span>)
         });
 
         let searchSkillConstraints = this.state.searchSkills.map((category) => {
-            return (<span key={category} className="badge badge-pill badge-success mr-1 mt-1" onClick={this.removeSearchSkill.bind(this, category)}>{category}</span>)
+            return (<span key={category} className="badge badge-pill badge-success mr-1 mt-1 editable" onClick={this.removeSearchSkill.bind(this, category)}>{category}</span>)
         });
 
         return [...searchCatogoryConstraints, ...searchSubCatogoryConstraints, ...searchSkillConstraints];
@@ -152,13 +164,11 @@ export default class SearchDevelopersPage extends Component {
     renderDevelopers = (developers) => {
         if (developers.length > 0) {
             return developers.map((developer) => {
-                return <div className="shadow-sm mr-3"><DeveloperCard developer={developer} cardType="basic" /></div>
+                return <div key={developer._id} className={(window.innerWidth < 820) ? "mb-2 mx-auto" : "mr-2"} style={{width: "fit-content"}}><DeveloperCard developer={developer} cardType="basic" /></div>
             });
         } else {
             return (
-                <div className="bg-white w-50 h-75 mx-auto border border-danger">
-                    <h1 className="text-error text-center my-auto">Developers not found</h1>
-                </div>
+                <h1 className="text-danger text-center my-auto">No Developers Found</h1>
             )
         }
     }
@@ -185,7 +195,7 @@ export default class SearchDevelopersPage extends Component {
                 <div style={{overflow: "hidden"}}>
                     <h3 className="text-main text-center my-3">FIND A DEVELOPER</h3>
 
-                    <div className="bg-main w-75 d-flex p-2 rounded-lg mx-auto">
+                    <div className="bg-main w-75 d-flex p-2 rounded-lg mx-auto justify-content-center">
                         <input className="form-control mr-3" style={{height: "40px", width: "200px"}} value={this.state.searchUsername} onChange={this.onChangeSearchUsername} placeholder="Developer's Username"/>
                         <select className="form-control mr-3" style={{height: "40px", width: "100px"}} onChange={this.onChangeSearchCategory}><option>Field</option>{this.renderCategoryOptions()}</select>
                         <select className="form-control mr-3" style={{height: "40px", width: "100px"}} onChange={this.onChangeSearchSubCategory}><option>Sub-Field</option>{this.renderSubCategoryOptions()}</select>
@@ -196,7 +206,7 @@ export default class SearchDevelopersPage extends Component {
                         {this.renderSearchConstraints()}
                     </div>
 
-                    <div className="mx-auto d-flex justify-content-center w-75 mb-5">
+                    <div className={(window.innerWidth > 820) ? "mx-auto d-flex justify-content-center w-75 mb-5" : "mx-auto d-flex flex-column justify-content-center w-75 mb-5"}>
                         {this.renderDevelopers(this.filterDevelopers())}
                     </div>
 

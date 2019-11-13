@@ -49,9 +49,8 @@ export default class CreateProjectForm extends Component {
         }
 
         const res = await axios.post("http://localhost:5000/project/new", project);
-        console.log(res)
 
-        // window.location = "/project/" + projectID;
+        window.location = "/project/" + res.projectID;
     }
     // Main render method
     render() {

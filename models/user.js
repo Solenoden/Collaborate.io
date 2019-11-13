@@ -9,7 +9,7 @@ const userSchema = new Schema({
     skills: {type: Array, required: false, default: []},
     devCategories: {type: Array, required: true},
     devSubCategories: {type: Array, required: true},
-    profileDescription: {type: String, required: false, default: "No Description"},
+    profileDescription: {type: String, required: false},
     profilePic: {type: String, required: false, default: "https://cdn-prod.medicalnewstoday.com/content/images/articles/279/279359/eggplants.jpg"},
     friends: {type: Array, required: false},
     notifications: [
@@ -18,7 +18,8 @@ const userSchema = new Schema({
             title: {type: String, required: true},
             description: {type: String, required: false}
         }
-    ]
+    ],
+    projects: {type: Array, required: false, default: []}
 }, {
     timestamps: true
 });

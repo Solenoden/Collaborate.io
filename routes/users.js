@@ -42,10 +42,7 @@ router.route("/new").post((req, res) => {
 router.route("/edit/:id").post((req, res) => {
     User.findById(req.params.id)
     .then((user) => {
-        // user.email = req.body.email;
         user.fullName = req.body.fullName;
-        // user.username = req.body.username
-        // user.password = req.body.password;
         user.skills = req.body.skills;
         user.devCategories = req.body.devCategories;
         user.devSubCategories = req.body.devSubCategories;
@@ -53,6 +50,7 @@ router.route("/edit/:id").post((req, res) => {
         user.profilePic = req.body.profilePic;
         user.friends = req.body.friends;
         user.notifications = req.body.notifications;
+        user.projects = req.body.projects;
 
         user.save()
         .then(() => res.json("Successfully updated user's information."))
@@ -60,5 +58,9 @@ router.route("/edit/:id").post((req, res) => {
     })
     .catch((err) => console.log("ERROR: " + err));
 });
+
+// router.route("/featured/:category").get((req, res) => {
+//     User.find({devCategories: [req.params.category]}).sort({"projects.size": 1})
+// });
 
 module.exports = router;
